@@ -44,9 +44,16 @@ services:
       #   https://collabboard.onrender.com   (or whatever Render assigns)
       - key: CLIENT_URL
         sync: false
-      # ── Email (Gmail SMTP). HOST/PORT are safe to store; the rest are entered on
-      #    blueprint sync so no credentials live in the repo. SMTP_PASS is a Google
-      #    App Password (not the account password); SMTP_USER = EMAIL_FROM = the Gmail.
+      # ── Email via Resend HTTP API (preferred — Render free tier blocks outbound SMTP).
+      #    Get a key at resend.com. EMAIL_FROM must use a domain verified in Resend;
+      #    "CollabBoard <onboarding@resend.dev>" works for testing but only delivers
+      #    to the Resend account owner's own address.
+      - key: RESEND_API_KEY
+        sync: false
+      - key: EMAIL_FROM
+        sync: false
+      # ── Email fallback (Gmail SMTP) — only used when RESEND_API_KEY is empty.
+      #    SMTP_PASS is a Google App Password (not the account password).
       - key: SMTP_HOST
         value: smtp.gmail.com
       - key: SMTP_PORT
@@ -54,8 +61,6 @@ services:
       - key: SMTP_USER
         sync: false
       - key: SMTP_PASS
-        sync: false
-      - key: EMAIL_FROM
         sync: false
 
   - type: keyvalue

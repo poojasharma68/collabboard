@@ -36,6 +36,11 @@ The repo already contains everything needed: `Dockerfile` (combined build) and
 3. Render prompts for the values marked `sync: false`:
    - **MONGO_URI** → paste the Atlas string from step 1.4.
    - **CLIENT_URL** → leave blank for now (you'll set it in step 5).
+   - **RESEND_API_KEY** → your key from resend.com (leave blank to skip email).
+   - **EMAIL_FROM** → e.g. `CollabBoard <no-reply@yourdomain.com>` (domain verified in
+     Resend). `CollabBoard <onboarding@resend.dev>` works for testing, but only delivers
+     to your own Resend account email.
+   - **SMTP_USER / SMTP_PASS** → leave blank when using Resend.
    `JWT_ACCESS_SECRET`, `JWT_REFRESH_SECRET`, `SHARE_LINK_SECRET` are auto-generated;
    `REDIS_URL` is auto-wired from the Key Value service.
 4. The first deploy builds the Dockerfile (compiles web + server). Wait for **Live**.
