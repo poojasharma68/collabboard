@@ -18,6 +18,7 @@ export async function connectDb(uri: string = env.MONGO_URI): Promise<typeof mon
   mongoose.connection.on('connected', () => logger.info('MongoDB connected'));
   mongoose.connection.on('error', (err) => logger.error({ err }, 'MongoDB error'));
   mongoose.connection.on('disconnected', () => logger.warn('MongoDB disconnected'));
+  logger.info({ mongo: uri.replace(/\/\/[^@]*@/, '//***@') }, 'Connecting to MongoDB');
   await mongoose.connect(uri, { serverSelectionTimeoutMS: 10000 });
   return mongoose;
 }

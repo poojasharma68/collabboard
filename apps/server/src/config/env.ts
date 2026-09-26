@@ -76,6 +76,17 @@ if (!parsed.success) {
   process.exit(1);
 }
 
+// In production the localhost default is never right — fail loudly instead of a
+// misleading ECONNREFUSED 127.0.0.1:27017. Lists similarly-named keys to catch typos.
+if (parsed.data.NODE_ENV === 'production' && !process.env.MONGO_URI?.trim()) {
+  const similar = Object.keys(process.env).filter((k) => /mongo/i.test(k));
+  // eslint-disable-next-line no-console
+  console.error(
+    `❌ MONGO_URI is not set. Similar env keys found: ${similar.length ? similar.map((k) => JSON.stringify(k)).join(', ') : 'none'}`,
+  );
+  process.exit(1);
+}
+
 export const env = parsed.data;
 export const isProd = env.NODE_ENV === 'production';
 export const isTest = env.NODE_ENV === 'test';
